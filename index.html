@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Mouse Inventory System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        .cage-display {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        #inventorySection {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lab Mouse Inventory System</h1>
+        
+        <div class="tabs">
+            <div class="tab active" id="tabRemoveMouse">Remove Mouse</div>
+            <div class="tab" id="tabDailyCheck">Daily Check</div>
+            <div class="tab" id="tabViewInventory">View Inventory</div>
+        </div>
+        
+        <!-- Remove Mouse Form -->
+        <div class="tab-content active" id="removeMouseContent">
+            <h2>Record Mouse Removal</h2>
+            <form id="removeMouseForm">
+                <div class="form-group">
+                    <label for="room">Room:</label>
+                    <select id="room" required>
+                        <option value="">Select Room</option>
+                        <option value="1103A">1103A</option>
+                        <option value="1103D">1103D</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rack">Rack Number (1-4):</label>
+                    <select id="rack" required>
+                        <option value="">Select Rack</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="column">Column (A-J):</label>
+                    <select id="column" required>
+                        <option value="">Select Column</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                        <option value="J">J</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="row">Row (1-10):</label>
+                    <select id="row" required>
+                        <option value="">Select Row</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthdate">Birthdate:</label>
+                    <input type="date" id="birthdate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="strain">Strain:</label>
+                    <input type="text" id="strain" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="quantity">Number of Mice Removed:</label>
+                    <input type="number" id="quantity" min="1" max="5" value="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="researcher">Researcher Name:</label>
+                    <input type="text" id="researcher" required>
+                </div>
+                
+                <button type="submit" class="btn">Submit Removal</button>
+            </form>
+            
+            <div class="success-message" id="removeSuccess">
+                Mouse removal recorded successfully!
+            </div>
+        </div>
+        
+        <!-- Daily Check Form -->
+        <div class="tab-content" id="dailyCheckContent">
+            <h2>Daily Vivarium Check</h2>
+            <form id="dailyCheckForm">
+                <div class="form-group">
+                    <label for="checkDate">Date:</label>
+                    <input type="date" id="checkDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="checkRoom">Room:</label>
+                    <select id="checkRoom" required>
+                        <option value="">Select Room</option>
+                        <option value="1103A">1103A</option>
+                        <option value="1103D">1103D</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cageCount">Total Cage Count:</label>
+                    <input type="number" id="cageCount" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="temperature">Temperature (°C):</label>
+                    <input type="number" id="temperature" step="0.1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="humidity">Humidity (%):</label>
+                    <input type="number" id="humidity" step="0.1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes (optional):</label>
+                    <textarea id="notes" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Submit Daily Check</button>
+            </form>
+            
+            <div class="success-message" id="checkSuccess">
+                Daily check recorded successfully!
+            </div>
+        </div>
+        
+        <!-- View Inventory -->
+        <div class="tab-content" id="viewInventoryContent">
+            <h2>Current Mouse Inventory</h2>
+            
+            <div class="form-group">
+                <label for="filterRoom">Filter by Room:</label>
+                <select id="filterRoom">
+                    <option value="all">All Rooms</option>
+                    <option value="1103A">1103A</option>
+                    <option value="1103D">1103D</option>
+                </select>
+            </div>
+            
+            <div id="inventorySection">
+                <table id="inventoryTable">
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th>Cage Location</th>
+                            <th>Strain</th>
+                            <th>Gender</th>
+                            <th>Birthdate</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryBody">
+                        <!-- This will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample inventory data (this would normally be loaded from your database)
+        let mouseInventory = [
+            {
+                room: '1103A',
+                rack: 1,
+                column: 'A',
+                row: 1,
+                strain: 'C57BL/6',
+                gender: 'Male',
+                birthdate: '2024-03-15',
+                count: 5
+            },
+            {
+                room: '1103A',
+                rack: 1,
+                column: 'B',
+                row: 2,
+                strain: 'BALB/c',
+                gender: 'Female',
+                birthdate: '2024-04-01',
+                count: 4
+            },
+            {
+                room: '1103D',
+                rack: 2,
+                column: 'C',
+                row: 3,
+                strain: 'C57BL/6',
+                gender: 'Female',
+                birthdate: '2024-02-20',
+                count: 3
+            }
+        ];
+
+        // Daily check data
+        let dailyChecks = [];
+
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const contentId = this.id.replace('tab', '') + 'Content';
+                document.getElementById(contentId).classList.add('active');
+                
+                // If viewing inventory, refresh the display
+                if (contentId === 'viewInventoryContent') {
+                    displayInventory();
+                }
+            });
+        });
+
+        // Form submission for mouse removal
+        document.getElementById('removeMouseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const room = document.getElementById('room').value;
+            const rack = document.getElementById('rack').value;
+            const column = document.getElementById('column').value;
+            const row = document.getElementById('row').value;
+            const gender = document.getElementById('gender').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const strain = document.getElementById('strain').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const researcher = document.getElementById('researcher').value;
+            
+            // Update inventory (in a real app, this would connect to your database)
+            updateInventory(room, rack, column, row, strain, gender, birthdate, -quantity);
+            
+            // Show success message
+            const successMsg = document.getElementById('removeSuccess');
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Form submission for daily check
+        document.getElementById('dailyCheckForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const checkDate = document.getElementById('checkDate').value;
+            const room = document.getElementById('checkRoom').value;
+            const cageCount = document.getElementById('cageCount').value;
+            const temperature = document.getElementById('temperature').value;
+            const humidity = document.getElementById('humidity').value;
+            const notes = document.getElementById('notes').value;
+            
+            // Save the daily check (in a real app, this would connect to your database)
+            const checkData = {
+                date: checkDate,
+                room: room,
+                cageCount: cageCount,
+                temperature: temperature,
+                humidity: humidity,
+                notes: notes
+            };
+            dailyChecks.push(checkData);
+            
+            // Show success message
+            const successMsg = document.getElementById('checkSuccess');
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Filter inventory by room
+        document.getElementById('filterRoom').addEventListener('change', function() {
+            displayInventory();
+        });
+
+        // Function to update inventory
+        function updateInventory(room, rack, column, row, strain, gender, birthdate, countChange) {
+            // Check if cage already exists in inventory
+            const cageIndex = mouseInventory.findIndex(cage => 
+                cage.room === room && 
+                cage.rack === parseInt(rack) && 
+                cage.column === column && 
+                cage.row === parseInt(row) &&
+                cage.strain === strain &&
+                cage.gender === gender &&
+                cage.birthdate === birthdate
+            );
+            
+            if (cageIndex !== -1) {
+                // Update existing cage
+                mouseInventory[cageIndex].count += countChange;
+                
+                // Remove cage if empty
+                if (mouseInventory[cageIndex].count <= 0) {
+                    mouseInventory.splice(cageIndex, 1);
+                }
+            } else if (countChange > 0) {
+                // Add new cage if adding mice (not relevant for removal)
+                mouseInventory.push({
+                    room: room,
+                    rack: parseInt(rack),
+                    column: column,
+                    row: parseInt(row),
+                    strain: strain,
+                    gender: gender,
+                    birthdate: birthdate,
+                    count: countChange
+                });
+            }
+            
+            // In a real application, you would save this to a database
+            console.log('Inventory updated:', mouseInventory);
+        }
+
+        // Function to display inventory
+        function displayInventory() {
+            const tableBody = document.getElementById('inventoryBody');
+            const filterRoom = document.getElementById('filterRoom').value;
+            
+            // Clear current table
+            tableBody.innerHTML = '';
+            
+            // Filter inventory based on selected room
+            const filteredInventory = filterRoom === 'all' 
+                ? mouseInventory 
+                : mouseInventory.filter(cage => cage.room === filterRoom);
+            
+            // Add rows to table
+            filteredInventory.forEach(cage => {
+                const row = document.createElement('tr');
+                
+                // Format the cage location
+                const cageLocation = `Rack ${cage.rack}, ${cage.column}${cage.row}`;
+                
+                // Create table cells
+                row.innerHTML = `
+                    <td>${cage.room}</td>
+                    <td>${cageLocation}</td>
+                    <td>${cage.strain}</td>
+                    <td>${cage.gender}</td>
+                    <td>${formatDate(cage.birthdate)}</td>
+                    <td>${cage.count}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Show message if no cages found
+            if (filteredInventory.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `<td colspan="6" style="text-align: center;">No cages found</td>`;
+                tableBody.appendChild(emptyRow);
+            }
+        }
+
+        // Helper function to format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString();
+        }
+
+        // Initialize inventory display
+        displayInventory();
+    </script>
+</body>
+</html>
