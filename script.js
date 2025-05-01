@@ -14,13 +14,13 @@ function loadGoogleAPI() {
 // 2. Initialize the Google API client
 function initGoogleClient() {
   // Replace these with your own credentials from Google Cloud Console
-  const API_KEY = 'YOUR_API_KEY';
-  const CLIENT_ID = 'YOUR_CLIENT_ID';
+  const API_KEY = 'AIzaSyDvbDaNYjLdhrse-wuITyWR2634RVMkE-8';
+  const CLIENT_ID = '1029992771113-lthudrtdit5iaq84uc0egtr2tlp43frv.apps.googleusercontent.com';
   const DISCOVERY_DOCS = ['https://sheets.googleapis.com/$discovery/rest?version=v4'];
   const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
   
   // Your spreadsheet ID (from the URL of your Google Sheet)
-  const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID';
+  const SPREADSHEET_ID = '1qKT4nt0XKDB8zLvbS5dH4mqz-jMt4y32CEKrvw_SnxQ';
   
   gapi.client.init({
     apiKey: API_KEY,
